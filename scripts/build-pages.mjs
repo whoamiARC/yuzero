@@ -3,7 +3,9 @@ import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
 const nextCli = require.resolve("next/dist/bin/next");
-const siteBasePath = process.env.YUZERO_PAGES_BASE_PATH ?? "/yuzero";
+const configuredBasePath = process.env.YUZERO_PAGES_BASE_PATH;
+const siteBasePath =
+  configuredBasePath === "/" ? "" : (configuredBasePath ?? "/yuzero");
 
 const result = spawnSync(process.execPath, [nextCli, "build"], {
   env: {
