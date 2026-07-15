@@ -236,7 +236,7 @@ button {
   animation: heroIn 1.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
   background-image:
     linear-gradient(90deg, rgba(5, 7, 11, 0.98) 0%, rgba(5, 7, 11, 0.78) 24%, rgba(5, 7, 11, 0.14) 59%, rgba(5, 7, 11, 0.06) 100%),
-    url("/yuzero-hero.png");
+    var(--hero-image, url("/yuzero-hero.png"));
   background-position: center, center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -1711,7 +1711,7 @@ footer {
   .hero-image {
     background-image:
       linear-gradient(90deg, rgba(5, 7, 11, 0.98) 0%, rgba(5, 7, 11, 0.66) 45%, rgba(5, 7, 11, 0.2) 100%),
-      url("/yuzero-hero.png");
+      var(--hero-image, url("/yuzero-hero.png"));
     background-position: center, 58% center;
   }
 
@@ -1864,7 +1864,7 @@ footer {
   .hero-image {
     background-image:
       linear-gradient(180deg, rgba(5, 7, 11, 0.15), rgba(5, 7, 11, 0.66) 56%, #05070b 100%),
-      url("/yuzero-hero.png");
+      var(--hero-image, url("/yuzero-hero.png"));
     background-position: center, 62% 20%;
     background-size: cover, auto 73%;
   }

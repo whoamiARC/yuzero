@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
+
+const siteBasePath = process.env.NEXT_PUBLIC_SITE_BASE_PATH ?? "";
 
 const solutions = [
   {
@@ -161,7 +163,15 @@ export default function Home() {
       </header>
 
       <section className="hero" id="top">
-        <div className="hero-image" aria-hidden="true" />
+        <div
+          className="hero-image"
+          aria-hidden="true"
+          style={
+            {
+              "--hero-image": `url("${siteBasePath}/yuzero-hero.png")`,
+            } as CSSProperties
+          }
+        />
         <div className="hero-grid" aria-hidden="true" />
         <div className="hero-glow" aria-hidden="true" />
 
