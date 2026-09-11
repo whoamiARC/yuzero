@@ -13,13 +13,23 @@
 
 `www.yuzero.com` 的 CNAME 为 `whoamiarc.github.io`，TTL 为 600 秒；权威名称服务器为 `antonio.dnspod.net` 和 `susan.dnspod.net`。
 
-这说明旧官网使用 GitHub Pages 提供内容，DNS 则由腾讯云 DNSPod 管理。此次发布采用 Cloudflare Pages，无需迁移整个域名的名称服务器；只需在 Cloudflare 关联 `www.yuzero.com` 后更新其 CNAME。
+这说明旧官网使用 GitHub Pages 提供内容，DNS 则由腾讯云 DNSPod 管理。部署过程中，用户已将名称服务器迁移到 Cloudflare，域名区域现为 active：`harlee.ns.cloudflare.com`、`nash.ns.cloudflare.com`。后续官网解析在 Cloudflare 管理。
 
 | 类型 | 主机记录 | 原记录值 | 新记录值 |
 | --- | --- | --- | --- |
 | CNAME | `www` | `whoamiarc.github.io` | `yuzero.pages.dev` |
 
-DNS 切换后，应确认 Cloudflare 自定义域名状态为 active，HTTPS 可用，四个页面均可直接打开和刷新。
+已在 Cloudflare 完成上表 CNAME 切换，保留代理开启和自动 TTL。自定义域名、所有权验证与 HTTPS 验证均为 active。
+
+## 本次发布结果（2026-09-11）
+
+- Cloudflare 生产部署状态：success。
+- 部署标识：`78678313-4e02-4431-8207-052af4c9dbd0`。
+- 对应应用源码提交：`1b8a965e3de772500428b108fbbdbfabe82f5183`。
+- 不可变部署地址：`https://78678313.yuzero.pages.dev`。
+- 已在正式域名通过 HTTPS 检查首页、产品、了解我们、联系我们四页，均返回 HTTP 200。
+- 已验证产品页包含 CET通 1.0（.cn）、2.0（.com）及 CoFate 入口；静态导航数据和 CoFate 图片也返回 HTTP 200。
+- 13 项静态发布检查通过。
 
 域名注册、其他子域名和邮件解析不属于此次迁移。不要删除其他记录。根域 `yuzero.com` 的处理应依据其现有用途单独决定。
 
