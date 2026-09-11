@@ -219,3 +219,31 @@ h2>span{color:var(--muted)}
 .product-title-row .cofate-word{font-size:1.4rem;color:#5b497c;letter-spacing:-.03em}
 .status-beta{background:#f1edf8;color:#674287}
 @media(max-width:480px){.cet-legacy-visual{gap:20px;padding:26px 22px}.cet-legacy-visual>img{width:84px;height:56px}.cet-legacy-visual strong{font-size:1.75rem}.product-title-row .cofate-word{font-size:1.25rem}}
+
+/* Keep language selection visible on both desktop and mobile. */
+.header-inner{gap:16px}
+.header-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.language-switch{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:44px;padding:8px 14px;border:1px solid #c8dcdf;border-radius:999px;background:#ffffff80;color:var(--navy);font-size:.875rem;font-weight:600;white-space:nowrap;transition:background .2s,border-color .2s}
+.language-switch:hover{background:#e5f3f1;border-color:#8fbfbd}
+.language-switch svg{flex-shrink:0}
+.hero-layout>*,.about-layout>*,.method-layout>*,.section-heading>*,.product-grid>*,.contact-panel>div:first-child{min-width:0}
+html[lang="en"] h1,html[lang="en"] h2{letter-spacing:-.045em;text-wrap:balance}
+html[lang="en"] .hero h1{font-size:clamp(2.5rem,4.2vw,4.25rem)}
+html[lang="en"] .hero h1>span{white-space:normal}
+html[lang="en"] .section-heading>div{flex:1}
+html[lang="en"] .section-description{flex:0 1 40%;max-width:30em}
+html[lang="en"] .brand-type>span{letter-spacing:.07em}
+html[lang="en"] .hero-caption>span+span{letter-spacing:.08em}
+html[lang="en"] .go-visual-copy>strong{font-size:clamp(1.5rem,2.5vw,2.1rem);line-height:1.35}
+html[lang="en"] .cet-legacy-visual strong{font-size:clamp(1.5rem,2.5vw,2.1rem)}
+html[lang="en"] .brand-stage-bottom a{flex-shrink:0}
+@media(max-width:800px){html[lang="en"] .hero h1{font-size:clamp(2.5rem,7vw,3.75rem)}}
+@media(max-width:480px){
+  .header-inner{gap:8px}.header-actions{gap:4px}.header-inner .brand-symbol{width:48px}.header-inner .brand-symbol img{left:-11px}
+  .language-switch{padding-inline:9px;font-size:.875rem}.language-switch svg{display:none}
+  html[lang="en"] .hero h1{font-size:clamp(2rem,7.75vw,2.75rem)}
+  html[lang="en"] .hero-index{flex-wrap:wrap}
+  html[lang="en"] .cet-legacy-visual{flex-direction:column;align-items:flex-start;gap:14px;min-height:300px;aspect-ratio:auto}
+  html[lang="en"] .cet-legacy-visual strong{font-size:1.75rem}
+  html[lang="en"] .go-visual-copy>strong{font-size:1.5rem}
+}

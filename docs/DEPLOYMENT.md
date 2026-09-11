@@ -6,7 +6,7 @@
 - 生产分支标记：`main`
 - 默认生产地址：`https://yuzero.pages.dev`
 - 正式域名：`www.yuzero.com`
-- 发布目录：`out/`；使用 `YUZERO_PAGES_BASE_PATH=/` 导出四个独立静态页面。
+- 发布目录：`out/`；使用 `YUZERO_PAGES_BASE_PATH=/` 导出中文四页及对应 `/en/` 英文四页。
 - 部署方式：Wrangler Direct Upload。可在本地运行 `corepack pnpm@11 run deploy:cloudflare`，包含构建与产物检查。
 
 ## 迁移前核实的解析（2026-09-11）
@@ -21,7 +21,7 @@
 
 已在 Cloudflare 完成上表 CNAME 切换，保留代理开启和自动 TTL。自定义域名、所有权验证与 HTTPS 验证均为 active。
 
-## 本次发布结果（2026-09-11）
+## 首次迁移发布记录（2026-09-11）
 
 - Cloudflare 生产部署状态：success。
 - 部署标识：`78678313-4e02-4431-8207-052af4c9dbd0`。
@@ -32,6 +32,12 @@
 - 13 项静态发布检查通过。
 
 域名注册、其他子域名和邮件解析不属于此次迁移。不要删除其他记录。根域 `yuzero.com` 的处理应依据其现有用途单独决定。
+
+## 语言版本发布
+
+中文保留 `/`、`/products/`、`/about/`、`/contact/`；英文为 `/en/` 下的对应四页。两种语言使用同一套本地素材与静态部署，没有翻译 API 或额外服务器依赖。顶部语言链接切换当前页，页面语言由地址确定。
+
+当前 `www.yuzero.com` 与 `yuzero.com` 均已绑定 Cloudflare Pages。部分递归 DNS 可能仍缓存迁移前的名称服务器，因此更新时应同步推送 GitHub `main` 触发保留的 Pages 工作流，并上传同版本的根路径静态产物到 Cloudflare。检查两边的中英文页面和语言入口，待旧 DNS 缓存自然过期。GitHub Actions 成功不等于 Cloudflare 已更新。
 
 ## 回退
 

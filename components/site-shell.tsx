@@ -4,21 +4,26 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Arrow, Brand } from "@/components/brand";
-import { navigation } from "@/lib/site";
+import { siteHref } from "@/lib/site";
+import { alternatePath, getNavigation, shellCopy, type Locale } from "@/lib/i18n";
 
 const normalizePath = (path: string) => path.replace(/\/+$/, "") || "/";
 
-export default function SiteShell({ children }: { children: ReactNode }) {
+export default function SiteShell({ children, locale }: { children: ReactNode; locale: Locale }) {
   const pathname = normalizePath(usePathname() ?? "/");
   // A route change resets the menu and releases its scroll/focus state.
-  return <SiteFrame key={pathname} pathname={pathname}>{children}</SiteFrame>;
+  return <SiteFrame key={pathname} pathname={pathname} locale={locale}>{children}</SiteFrame>;
 }
 
-function SiteFrame({ children, pathname }: { children: ReactNode; pathname: string }) {
+function SiteFrame({ children, pathname, locale }: { children: ReactNode; pathname: string; locale: Locale }) {
+  const text = shellCopy[locale];
+  const navigation = getNavigation(locale);
+  const otherLanguage = locale === "zh" ? "en" : "zh-CN";
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const menuToggle = useRef<HTMLButtonElement>(null);
   const menuPanel = useRef<HTMLElement>(null);
+  const languageSwitch = useRef<HTMLAnchorElement>(null);
   const isCurrent = (href: string) => normalizePath(href) === pathname;
 
   useEffect(() => {
@@ -39,7 +44,7 @@ function SiteFrame({ children, pathname }: { children: ReactNode; pathname: stri
         menuToggle.current?.focus();
       }
       if (event.key !== "Tab") return;
-      const controls = [menuToggle.current, ...Array.from(menuPanel.current?.querySelectorAll<HTMLAnchorElement>("a") ?? [])].filter(Boolean) as HTMLElement[];
+      const controls = [languageSwitch.current, menuToggle.current, ...Array.from(menuPanel.current?.querySelectorAll<HTMLAnchorElement>("a") ?? [])].filter(Boolean) as HTMLElement[];
       const first = controls[0];
       const last = controls[controls.length - 1];
       if (event.shiftKey && document.activeElement === first) {
@@ -70,20 +75,26 @@ function SiteFrame({ children, pathname }: { children: ReactNode; pathname: stri
 
   return (
     <>
-      <a className="skip-link" href="#main" inert={menuOpen}>跳转到正文</a>
-      <header className={"site-header" + (scrolled ? " is-scrolled" : "")} role={menuOpen ? "dialog" : undefined} aria-modal={menuOpen || undefined} aria-label={menuOpen ? "主菜单" : undefined}>
+      <a className="skip-link" href="#main" inert={menuOpen}>{text.skip}</a>
+      <header className={"site-header" + (scrolled ? " is-scrolled" : "")} role={menuOpen ? "dialog" : undefined} aria-modal={menuOpen || undefined} aria-label={menuOpen ? text.menu : undefined}>
         <div className="header-inner">
-          <Brand inert={menuOpen} />
-          <nav className="desktop-nav" aria-label="主导航">
+          <Brand inert={menuOpen} locale={locale} />
+          <nav className="desktop-nav" aria-label={text.navigationLabel}>
             {navigation.map((item) => (
               <Link key={item.href} href={item.href} aria-current={isCurrent(item.href) ? "page" : undefined}>{item.label}</Link>
             ))}
           </nav>
-          <button ref={menuToggle} className={"menu-toggle" + (menuOpen ? " is-open" : "")} type="button" aria-label={menuOpen ? "关闭菜单" : "打开菜单"} aria-expanded={menuOpen} aria-controls="mobile-navigation" onClick={() => setMenuOpen((open) => !open)}>
-            <span /><span />
-          </button>
+          <div className="header-actions">
+            <a ref={languageSwitch} className="language-switch" href={siteHref(alternatePath(locale, pathname))} hrefLang={otherLanguage} lang={otherLanguage} aria-label={text.languageLabel}>
+              <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="9" /><ellipse cx="12" cy="12" rx="4" ry="9" /><path d="M3 12h18" /></svg>
+              <span>{text.language}</span>
+            </a>
+            <button ref={menuToggle} className={"menu-toggle" + (menuOpen ? " is-open" : "")} type="button" aria-label={menuOpen ? text.close : text.open} aria-expanded={menuOpen} aria-controls="mobile-navigation" onClick={() => setMenuOpen((open) => !open)}>
+              <span /><span />
+            </button>
+          </div>
         </div>
-        <nav ref={menuPanel} id="mobile-navigation" className="mobile-nav" aria-label="移动端导航" hidden={!menuOpen}>
+        <nav ref={menuPanel} id="mobile-navigation" className="mobile-nav" aria-label={text.mobileNavigation} hidden={!menuOpen}>
           {navigation.map((item, index) => (
             <Link key={item.href} href={item.href} aria-current={isCurrent(item.href) ? "page" : undefined} onClick={() => onNavigate(item.href)}>
               <span>0{index + 1}</span>{item.label}<Arrow />
@@ -95,14 +106,14 @@ function SiteFrame({ children, pathname }: { children: ReactNode; pathname: stri
       <main id="main" tabIndex={-1} inert={menuOpen}>{children}</main>
       <footer className="site-footer" inert={menuOpen}>
         <div className="shell footer-main">
-          <Brand />
+          <Brand locale={locale} />
           <p>From zero,<br /><strong>to possibility.</strong></p>
-          <nav aria-label="页脚导航">
+          <nav aria-label={text.footerNavigation}>
             {navigation.slice(1).map((item) => <Link key={item.href} href={item.href} aria-current={isCurrent(item.href) ? "page" : undefined}>{item.label}</Link>)}
           </nav>
-          <a className="back-top" href="#main" aria-label="返回顶部">↑</a>
+          <a className="back-top" href="#main" aria-label={text.backTop}>↑</a>
         </div>
-        <div className="shell footer-bottom"><span>© {new Date().getFullYear()} YuZero · 煜零科技</span><span>设计与技术，让想法发生。</span></div>
+        <div className="shell footer-bottom"><span>© {new Date().getFullYear()} YuZero · {text.company}</span><span>{text.footer}</span></div>
       </footer>
     </>
   );

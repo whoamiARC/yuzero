@@ -5,35 +5,70 @@ import test from "node:test";
 const outputRoot = new URL("../out/", import.meta.url);
 const configuredBasePath = process.env.YUZERO_PAGES_BASE_PATH;
 const basePath = configuredBasePath === "/" ? "" : (configuredBasePath ?? "/yuzero");
-const routes = [
-  { path: "/", label: "首页", title: "YuZero 煜零科技", section: "hero" },
-  { path: "/products/", label: "公司产品", title: "公司产品", section: "products" },
-  { path: "/about/", label: "了解我们", title: "了解我们", section: "about" },
-  { path: "/contact/", label: "联系我们", title: "联系我们", section: "contact" },
+const pages = [
+  { path: "/", titles: ["YuZero 煜零科技", "YuZero | From zero"], section: "hero" },
+  { path: "/products/", titles: ["公司产品", "Products | YuZero"], section: "products" },
+  { path: "/about/", titles: ["了解我们", "About us | YuZero"], section: "about" },
+  { path: "/contact/", titles: ["联系我们", "Contact | YuZero"], section: "contact" },
 ];
+const routes = ["zh-CN", "en"].flatMap((locale, index) => pages.map((page) => ({
+  ...page, locale, title: page.titles[index],
+  path: (index ? "/en" : "") + page.path,
+  alternate: (index ? "" : "/en") + page.path,
+  chinesePath: page.path,
+})));
 const attribute = (tag, name) => tag.match(new RegExp(`\\b${name}="([^"]*)"`))?.[1];
 const documents = new Map();
 for (const route of routes) {
   const html = await readFile(new URL(route.path.slice(1) + "index.html", outputRoot), "utf8");
-  documents.set(route.path, { html, markup: html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "") });
+  documents.set(route.path, { html, locale: route.locale, markup: html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "") });
 }
 
 for (const route of routes) {
   const { html, markup } = documents.get(route.path);
 
   test(`${route.path} exports its own content, metadata and active navigation`, () => {
-    assert.match(markup, /<html[^>]*lang="zh-CN"/);
+    assert.ok(markup.includes(`<html lang="${route.locale}"`));
     assert.ok(markup.includes(`<title>${route.title}`));
     assert.equal((markup.match(/<h1\b/g) ?? []).length, 1);
     assert.match(markup, /name="description" content="[^"]+"/);
     const canonical = [...markup.matchAll(/<link\b[^>]*>/g)].map((match) => match[0]).find((tag) => attribute(tag, "rel") === "canonical");
     assert.equal(attribute(canonical ?? "", "href"), "https://www.yuzero.com" + route.path);
-    const navigation = markup.match(/<nav[^>]*aria-label="主导航"[\s\S]*?<\/nav>/)?.[0] ?? "";
-    for (const destination of routes) assert.ok(navigation.includes(`href="${basePath}${destination.path}"`));
+    const navigationLabel = route.locale === "en" ? "Main navigation" : "主导航";
+    const navigation = markup.match(new RegExp(`<nav[^>]*aria-label="${navigationLabel}"[\\s\\S]*?<\\/nav>`))?.[0] ?? "";
+    for (const destination of routes.filter((item) => item.locale === route.locale)) assert.ok(navigation.includes(`href="${basePath}${destination.path}"`));
     const activeLinks = [...navigation.matchAll(/<a\b[^>]*aria-current="page"[^>]*>/g)];
     assert.equal(activeLinks.length, 1);
     assert.equal(attribute(activeLinks[0][0], "href"), basePath + route.path);
     assert.doesNotMatch(markup, /Your site is taking shape|react-loading-skeleton/);
+    const alternates = [...markup.matchAll(/<link\b[^>]*>/g)].map((match) => match[0]).filter((tag) => attribute(tag, "rel") === "alternate");
+    for (const [language, path] of [["zh-CN", route.chinesePath], ["en", "/en" + route.chinesePath], ["x-default", route.chinesePath]]) {
+      const alternate = alternates.find((tag) => attribute(tag, "hrefLang") === language);
+      assert.ok(alternate, `Missing ${language} alternate`);
+      assert.equal(attribute(alternate, "href"), "https://www.yuzero.com" + path);
+    }
+  });
+
+  test(`${route.path} switches language on the same page and retains language in all internal links`, () => {
+    const switches = [...markup.matchAll(/<a\b[^>]*class="language-switch"[^>]*>/g)];
+    assert.equal(switches.length, 1);
+    const link = switches[0][0];
+    assert.equal(attribute(link, "href"), basePath + route.alternate);
+    assert.equal(attribute(link, "hrefLang"), route.locale === "en" ? "zh-CN" : "en");
+    assert.equal(attribute(link, "lang"), route.locale === "en" ? "zh-CN" : "en");
+    assert.ok(attribute(link, "aria-label"));
+    assert.match(markup.match(/<header[\s\S]*?<\/header>/)?.[0] ?? "", /class="language-switch"/);
+    for (const match of markup.matchAll(/<a\b[^>]*>/g)) {
+      const tag = match[0];
+      const href = attribute(tag, "href") ?? "";
+      if (!href.startsWith("/") || attribute(tag, "class") === "language-switch") continue;
+      assert.equal(documents.get(href.slice(basePath.length).split("#")[0])?.locale, route.locale, `Unexpected language change: ${href}`);
+    }
+    if (route.locale === "en") {
+      const visible = markup.replace(/<[^>]+>/g, " ").replace(/中文|通|因果/g, "");
+      assert.doesNotMatch(visible, /[\u3400-\u9fff]/, "Untranslated visible Chinese outside product names and the language switch");
+      assert.match(markup, /aria-label="Open menu"/);
+    }
   });
 
   test(`${route.path} has valid page links, anchors and accessibility targets`, () => {
@@ -106,4 +141,19 @@ test("content is distributed across pages instead of retained as a long homepage
   assert.match(about, /id="solutions"/);
   assert.match(about, /id="method"/);
   assert.match(documents.get("/contact/").markup, /href="mailto:hello@yuzero\.cn"/);
+});
+
+test("English product descriptions preserve launch status, versions and destinations", () => {
+  const english = documents.get("/en/products/").markup;
+  assert.match(english, /In development/);
+  assert.match(english, /Website coming soon/);
+  assert.match(english, /Public beta/);
+  assert.match(english, /class="product-version">1\.0/);
+  assert.match(english, /class="product-version">2\.0/);
+  for (const domain of ["www.cettong.com", "www.cettong.cn", "www.cofate.com"]) assert.ok(english.includes(`href="https://${domain}"`));
+  assert.match(english, /No registration needed/);
+  assert.match(english, /learning records/);
+  assert.doesNotMatch(english, /href="https?:\/\/go\.yuzero\.com/);
+  assert.match(english, /mailto:hello@yuzero\.cn\?subject=YuZero%20Go%20partnership%20inquiry/);
+  assert.match(documents.get("/en/contact/").markup, /href="mailto:hello@yuzero\.cn"/);
 });

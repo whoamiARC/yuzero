@@ -4,14 +4,16 @@
 
 ## 独立页面
 
-| 页面 | 路径 | 内容 |
-| --- | --- | --- |
-| 首页 | `/` | 品牌介绍与主要入口 |
-| 公司产品 | `/products/` | YuZero Go、CET通 1.0 / 2.0、CoFate 因果 |
-| 了解我们 | `/about/` | 公司理念、技术能力、产品方法 |
-| 联系我们 | `/contact/` | 商务合作与联系邮箱 |
+| 页面 | 中文路径 | 英文路径 | 内容 |
+| --- | --- | --- | --- |
+| 首页 | `/` | `/en/` | 品牌介绍与主要入口 |
+| 公司产品 | `/products/` | `/en/products/` | YuZero Go、CET通 1.0 / 2.0、CoFate 因果 |
+| 了解我们 | `/about/` | `/en/about/` | 公司理念、技术能力、产品方法 |
+| 联系我们 | `/contact/` | `/en/contact/` | 商务合作与联系邮箱 |
 
 所有页面共用导航和页脚，导航高亮当前页。页面可单独访问、刷新及分享；每页提供独立标题、描述与 canonical 地址。
+
+桌面和手机顶部的 English / 中文链接切换到当前页面的另一语言，站内导航继续使用当前语言。语言由 URL 确定，刷新、分享和浏览器返回均保留对应版本；不会根据 IP 自动跳转。中文和英文分别输出正确的 `html lang`，每页提供双向 `hreflang` 和中文 `x-default`。语言切换使用原生链接跨根布局完整导航，无需等待 JavaScript；现有中文产品品牌和官方图片保持原样。
 
 ## 产品与品牌
 
@@ -24,15 +26,16 @@
 
 ## 文件结构
 
-- `app/page.tsx`：首页品牌展示与分页入口。
-- `app/products/page.tsx`：公司产品页。
-- `app/about/page.tsx`：了解我们页。
-- `app/contact/page.tsx`：联系我们页。
+- `app/(zh)/`：中文四页路由及中文根布局。
+- `app/(en)/en/`：英文四页路由及英文根布局。
+- `components/pages/`：两种语言共用的页面结构。
 - `components/site-shell.tsx`：共享导航、当前页状态、移动菜单与页脚。
 - `components/brand.tsx`：共享 Logo 和箭头组件。
-- `lib/site.ts`：导航、商务邮箱和静态图片地址配置。
+- `lib/site.ts`：商务邮箱、静态图片和原生链接地址配置。
+- `lib/i18n.ts`：语言类型、对应路径、共享导航和辅助文案。
+- `lib/copy.ts`：页面中英文内容，仅在服务器渲染时使用。
+- `lib/metadata.ts`：每页中英文标题、描述、canonical、语言替代地址与图标。
 - `app/globals.css`：品牌色、排版与响应式样式。
-- `app/layout.tsx`：站点标题、描述、语言与图标。
 - `public/`：本地品牌及产品素材，来源见 `docs/ASSETS.md`。
 - `scripts/build-pages.mjs`：GitHub Pages 静态导出。
 - `scripts/deploy-cloudflare.mjs`：构建、检查后发布到用户 Cloudflare Pages。
@@ -61,11 +64,11 @@ $env:YUZERO_PAGES_BASE_PATH='/'
 corepack pnpm@11 test
 ```
 
-`test` 先执行真实 Next.js 静态导出，再检查四个页面的 HTML。13 项检查覆盖各页标题和 canonical、当前页导航、跨页链接、内部锚点、移动菜单初始状态、产品上线状态及图片、CSS、JS、图标文件。
+`test` 先执行真实 Next.js 静态导出，再检查中英两套、共八个页面的 HTML。34 项检查覆盖页面语言与翻译遗漏、标题和 canonical、双向 hreflang、切换到对应页面、站内语言保持、当前页导航、跨页链接、内部锚点、移动菜单初始状态、产品上线状态及图片、CSS、JS、图标文件。
 
 单独执行 `corepack pnpm@11 run build:pages` 可生成 `out/`。未设置 `YUZERO_PAGES_BASE_PATH` 时默认前缀为 `/yuzero`，适用于仓库型 GitHub Pages 地址；自定义域名使用 `/`。框架资源、产品图片与网站图标共同使用该前缀。
 
-站内页面链接使用 Next `Link`，由框架自动附加部署前缀；不要给页面链接调用 `asset()`。静态导出包含 `out/products/index.html`、`out/about/index.html`、`out/contact/index.html`，支持分页地址直接访问。
+站内页面链接使用 Next `Link`，由框架自动附加部署前缀；不要给页面链接调用 `asset()`。跨语言原生链接通过 `siteHref()` 附加前缀。静态导出包含中文页面与对应的 `out/en/` 页面，支持分页地址直接访问。
 
 ## 发布
 
