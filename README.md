@@ -19,8 +19,7 @@
 
 - **YuZero**：公司主品牌，官网为 `https://www.yuzero.com`。
 - **YuZero Go**：面向埃塞俄比亚的餐饮、超市配送产品。`https://go.yuzero.com` 为公开体验版，产品卡提供真实入口；演示不收取款项或安排真实配送。
-- **CET通 1.0**：四六级试卷、答案和听力资料下载，`https://www.cettong.cn`。
-- **CET通 2.0**：英语四、六级备考平台，`https://www.cettong.com`。
+- **CET通**：同一张产品卡合并展示两个版本，2.0 为在线备考（`https://www.cettong.com`），1.0 为免注册的试卷、答案和听力资料下载（`https://www.cettong.cn`）。
 - **CoFate 因果**：AI 多人叙事社交，当前公开测试，`https://www.cofate.com`。
 - 商务邮箱沿用原官网的 `hello@yuzero.cn`，统一配置在 `lib/site.ts`。
 
@@ -72,7 +71,7 @@ corepack pnpm@11 test
 
 站内页面链接使用 Next `Link`，由框架自动附加部署前缀；不要给页面链接调用 `asset()`。跨语言原生链接通过 `siteHref()` 附加前缀。静态导出包含中文页面与对应的 `out/en/` 页面，支持分页地址直接访问。
 
-图片采用 `public/media/v2/` 的不同宽度版本，浏览器通过 `srcset` 选择合适资源。首页 Logo 为 15–34 KB，原图为约 836 KB；导航内嵌的 Logo 为 8.7 KB。四张产品图随产品页立即加载，截图使用完整适配。该目录设置一年不可变缓存；修改素材时须更新目录版本与全部引用，避免旧缓存。原始素材保留在原路径，不再直接用于首屏。运行 `node scripts/optimize-images.mjs` 可复现当前优化资源。
+图片采用 `public/media/v2/` 的不同宽度版本，浏览器通过 `srcset` 选择合适资源。首页 Logo 为 15–34 KB，原图为约 836 KB；导航内嵌的 Logo 为 8.7 KB。三张产品图随产品页立即加载，截图使用完整适配。该目录设置一年不可变缓存；修改素材时须更新目录版本与全部引用，避免旧缓存。原始素材保留在原路径，不再直接用于首屏。运行 `node scripts/optimize-images.mjs` 可复现当前优化资源。
 
 ## 发布
 

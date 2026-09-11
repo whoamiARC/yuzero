@@ -22,12 +22,13 @@ export const copy = {
       },
       cet: {
         visit: "访问 CET通 2.0 官网（新窗口）", imageAlt: "CET通：四六级学习，就这么通",
-        category: "英语四、六级备考", description: "从历年真题到每日练习，结合大纲词汇、错题复习与学习记录，让日常备考更有条理。",
+        category: "英语四、六级备考", overview: "从真题资料下载到在线练习，为四六级备考提供两种实用方式。", versionsLabel: "选择 CET通 版本", versionLabel: "在线备考",
+        description: "历年真题、每日练习、大纲词汇、错题复习与学习记录，让备考更有条理。",
         tagsLabel: "CET通 2.0 主要功能", tags: ["历年真题", "词汇学习", "错题复习"], action: "体验 2.0",
       },
       legacy: {
         visit: "访问 CET通 1.0 官网（新窗口）", imageAlt: "CET通 1.0 标志", visual: ["真题，", "随时开练。"], caption: "试卷 · 答案 · 听力",
-        category: "英语四、六级真题下载", description: "提供历年试卷 PDF、答案解析与配套听力 MP3。无需注册即可下载，为纸上练习和离线备考准备资料。",
+        category: "英语四、六级真题下载", versionLabel: "真题资料", description: "免注册下载历年试卷 PDF、答案解析与听力 MP3，适合纸上练习和离线备考。",
         tagsLabel: "CET通 1.0 主要功能", tags: ["真题下载", "答案解析", "听力音频"], action: "进入 1.0",
       },
       cofate: {
@@ -81,13 +82,14 @@ export const copy = {
         comingSoon: "Demo only · No real deliveries", subject: "YuZero Go partnership inquiry", action: "Try the preview",
       },
       cet: {
-        visit: "Visit CET通 2.0 (opens in a new window)", imageAlt: "CET通 2.0: a Chinese-language platform for CET-4 and CET-6 exam preparation",
-        category: "CET-4 & CET-6 exam preparation", description: "Prepare for China’s College English Test with past papers, daily practice, syllabus vocabulary, mistake review and learning records. Keep your study routine on track.",
+        visit: "Visit CET通 2.0 (opens in a new window)", imageAlt: "CET通: Chinese-language tools for CET-4 and CET-6 exam preparation",
+        category: "CET-4 & CET-6 exam preparation", overview: "Download study materials or practice online. Two ways to prepare for CET-4 and CET-6.", versionsLabel: "Choose a CET通 version", versionLabel: "Online practice",
+        description: "Past papers, daily practice, syllabus vocabulary, mistake review and learning records, all in one place.",
         tagsLabel: "CET通 2.0 features", tags: ["Past papers", "Vocabulary", "Mistake review"], action: "Explore 2.0",
       },
       legacy: {
         visit: "Visit CET通 1.0 (opens in a new window)", imageAlt: "CET通 1.0 logo", visual: ["Past papers.", "Ready to practice."], caption: "Papers · Answers · Audio",
-        category: "CET-4 & CET-6 past paper downloads", description: "Download past papers as PDFs, answer explanations and listening tracks as MP3s. No registration needed—ready for practice on paper or offline study.",
+        category: "CET-4 & CET-6 past paper downloads", versionLabel: "Study materials", description: "Download paper PDFs, answer explanations and listening MP3s for offline study. No registration needed.",
         tagsLabel: "CET通 1.0 features", tags: ["Paper downloads", "Answer explanations", "Listening audio"], action: "Visit 1.0",
       },
       cofate: {
