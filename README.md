@@ -18,7 +18,7 @@
 ## 产品与品牌
 
 - **YuZero**：公司主品牌，官网为 `https://www.yuzero.com`。
-- **YuZero Go**：面向埃塞俄比亚的餐饮、超市配送产品。当前显示“开发中”；`go.yuzero.com` 是待启用的产品域名，未配置为可点击的上线入口。
+- **YuZero Go**：面向埃塞俄比亚的餐饮、超市配送产品。`https://go.yuzero.com` 为公开体验版，产品卡提供真实入口；演示不收取款项或安排真实配送。
 - **CET通 1.0**：四六级试卷、答案和听力资料下载，`https://www.cettong.cn`。
 - **CET通 2.0**：英语四、六级备考平台，`https://www.cettong.com`。
 - **CoFate 因果**：AI 多人叙事社交，当前公开测试，`https://www.cofate.com`。
@@ -83,4 +83,4 @@ corepack pnpm@11 run deploy:cloudflare
 
 仓库原有 GitHub Pages 工作流继续保留；它只更新旧 GitHub Pages 地址，不会自动更新 Cloudflare。后续发布 Cloudflare 请使用上面的命令。
 
-`go.yuzero.com` 需要为外卖产品单独配置 DNS 和部署目标，公司官网的产品展示不会自动创建子域名或发布外卖应用。
+`go.yuzero.com` 由外卖项目的独立 Cloudflare Worker 提供服务，公司官网只展示产品入口。更新公司官网不会替代 Go 应用的部署。

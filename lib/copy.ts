@@ -15,10 +15,10 @@ export const copy = {
       newWindow: "（新窗口）", available: "在线体验",
       go: {
         imageAlt: "刚制作好的汉堡与薯条", visual: ["好好生活，", "其余交给 Go。"], badge: "首站 · 埃塞俄比亚",
-        status: "开发中", category: "本地生活与即时配送",
+        status: "公开体验", category: "本地生活与即时配送",
         description: "面向埃塞俄比亚，连接餐厅、超市、骑手与消费者，把点餐和日常采购放进同一个 App。",
         tagsLabel: "YuZero Go 产品方向", tags: ["餐饮外卖", "超市配送", "骑手服务"],
-        comingSoon: "官网筹备中", subject: "YuZero Go 合作咨询", action: "合作咨询",
+        comingSoon: "体验版 · 无真实配送", subject: "YuZero Go 合作咨询", action: "打开体验版",
       },
       cet: {
         visit: "访问 CET通 2.0 官网（新窗口）", imageAlt: "CET通：四六级学习，就这么通",
@@ -75,10 +75,10 @@ export const copy = {
       newWindow: " (opens in a new window)", available: "Available now",
       go: {
         imageAlt: "A freshly prepared burger and fries", visual: ["Enjoy your day.", "Leave the rest to Go."], badge: "First stop · Ethiopia",
-        status: "In development", category: "Food, groceries and local delivery",
+        status: "Public preview", category: "Food, groceries and local delivery",
         description: "Being built for Ethiopia, YuZero Go will connect restaurants, supermarkets, delivery riders and customers, bringing food orders and everyday shopping into one app.",
         tagsLabel: "YuZero Go planned services", tags: ["Food delivery", "Grocery delivery", "Courier services"],
-        comingSoon: "Website coming soon", subject: "YuZero Go partnership inquiry", action: "Partner with us",
+        comingSoon: "Demo only · No real deliveries", subject: "YuZero Go partnership inquiry", action: "Try the preview",
       },
       cet: {
         visit: "Visit CET通 2.0 (opens in a new window)", imageAlt: "CET通 2.0: a Chinese-language platform for CET-4 and CET-6 exam preparation",

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Arrow } from "@/components/brand";
-import { asset, email } from "@/lib/site";
+import { asset } from "@/lib/site";
 import { copy } from "@/lib/copy";
 import { localizedPath, type Locale } from "@/lib/i18n";
 
@@ -27,7 +27,7 @@ export default function Products({ locale }: { locale: Locale }) {
                   <p className="product-category">{text.go.category}</p>
                   <p className="product-description">{text.go.description}</p>
                   <ul className="tag-list" aria-label={text.go.tagsLabel}>{text.go.tags.map((tag) => <li key={tag}>{tag}</li>)}</ul>
-                  <div className="product-bottom"><span className="product-domain">go.yuzero.com <small>{text.go.comingSoon}</small></span><a href={"mailto:" + email + "?subject=" + encodeURIComponent(text.go.subject)} className="product-link">{text.go.action} <Arrow diagonal /></a></div>
+                  <div className="product-bottom"><span className="product-domain">go.yuzero.com <small>{text.go.comingSoon}</small></span><a href="https://go.yuzero.com" target="_blank" rel="noopener noreferrer" className="product-link">{text.go.action} <Arrow diagonal /><span className="sr-only">{text.newWindow}</span></a></div>
                 </div>
               </article>
               <article className="product-card product-cet" aria-labelledby="cet-title">

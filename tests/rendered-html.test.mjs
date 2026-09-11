@@ -127,8 +127,8 @@ test("content is distributed across pages instead of retained as a long homepage
   assert.doesNotMatch(home, /id="products"|id="about"|id="solutions"|id="method"|id="contact"/);
   const products = documents.get("/products/").markup;
   assert.match(products, /id="product-go"/);
-  assert.match(products, /开发中/);
-  assert.match(products, /官网筹备中/);
+  assert.match(products, /公开体验/);
+  assert.match(products, /体验版 · 无真实配送/);
   assert.match(products, /href="https:\/\/www\.cettong\.com"/);
   assert.match(products, /href="https:\/\/www\.cettong\.cn"/);
   assert.match(products, /href="https:\/\/www\.cofate\.com"/);
@@ -136,7 +136,7 @@ test("content is distributed across pages instead of retained as a long homepage
   assert.match(products, /class="product-version">2\.0/);
   assert.match(products, /id="cofate-title"/);
   assert.match(products, /公开测试/);
-  assert.doesNotMatch(products, /href="https?:\/\/go\.yuzero\.com/);
+  assert.match(products, /href="https:\/\/go\.yuzero\.com"/);
   const about = documents.get("/about/").markup;
   assert.match(about, /id="solutions"/);
   assert.match(about, /id="method"/);
@@ -145,15 +145,14 @@ test("content is distributed across pages instead of retained as a long homepage
 
 test("English product descriptions preserve launch status, versions and destinations", () => {
   const english = documents.get("/en/products/").markup;
-  assert.match(english, /In development/);
-  assert.match(english, /Website coming soon/);
+  assert.match(english, /Public preview/);
+  assert.match(english, /Demo only · No real deliveries/);
   assert.match(english, /Public beta/);
   assert.match(english, /class="product-version">1\.0/);
   assert.match(english, /class="product-version">2\.0/);
   for (const domain of ["www.cettong.com", "www.cettong.cn", "www.cofate.com"]) assert.ok(english.includes(`href="https://${domain}"`));
   assert.match(english, /No registration needed/);
   assert.match(english, /learning records/);
-  assert.doesNotMatch(english, /href="https?:\/\/go\.yuzero\.com/);
-  assert.match(english, /mailto:hello@yuzero\.cn\?subject=YuZero%20Go%20partnership%20inquiry/);
+  assert.match(english, /href="https:\/\/go\.yuzero\.com"/);
   assert.match(documents.get("/en/contact/").markup, /href="mailto:hello@yuzero\.cn"/);
 });
