@@ -31,6 +31,7 @@
 - `components/pages/`：两种语言共用的页面结构。
 - `components/site-shell.tsx`：共享导航、当前页状态、移动菜单与页脚。
 - `components/brand.tsx`：共享 Logo 和箭头组件。
+- `lib/brand-image.ts`：直接随页面显示的小型原始 Logo；SVG 视口完整保留左右花括号，不依赖外部图片请求。
 - `lib/site.ts`：商务邮箱、静态图片和原生链接地址配置。
 - `lib/i18n.ts`：语言类型、对应路径、共享导航和辅助文案。
 - `lib/copy.ts`：页面中英文内容，仅在服务器渲染时使用。
@@ -38,6 +39,7 @@
 - `app/globals.css`：品牌色、排版与响应式样式。
 - `public/`：本地品牌及产品素材，来源见 `docs/ASSETS.md`。
 - `scripts/build-pages.mjs`：GitHub Pages 静态导出。
+- `scripts/optimize-images.mjs`：基于原始素材生成不同尺寸的 WebP 和轻量图标，依赖现有 Next.js 的 Sharp，无需新增依赖。
 - `scripts/deploy-cloudflare.mjs`：构建、检查后发布到用户 Cloudflare Pages。
 - `tests/rendered-html.test.mjs`：发布产物中的导航、状态及资源路径检查。
 - `.github/workflows/`：保留原有 GitHub Pages 自动发布配置。
@@ -69,6 +71,8 @@ corepack pnpm@11 test
 单独执行 `corepack pnpm@11 run build:pages` 可生成 `out/`。未设置 `YUZERO_PAGES_BASE_PATH` 时默认前缀为 `/yuzero`，适用于仓库型 GitHub Pages 地址；自定义域名使用 `/`。框架资源、产品图片与网站图标共同使用该前缀。
 
 站内页面链接使用 Next `Link`，由框架自动附加部署前缀；不要给页面链接调用 `asset()`。跨语言原生链接通过 `siteHref()` 附加前缀。静态导出包含中文页面与对应的 `out/en/` 页面，支持分页地址直接访问。
+
+图片采用 `public/media/v2/` 的不同宽度版本，浏览器通过 `srcset` 选择合适资源。首页 Logo 为 15–34 KB，原图为约 836 KB；导航内嵌的 Logo 为 8.7 KB。四张产品图随产品页立即加载，截图使用完整适配。该目录设置一年不可变缓存；修改素材时须更新目录版本与全部引用，避免旧缓存。原始素材保留在原路径，不再直接用于首屏。运行 `node scripts/optimize-images.mjs` 可复现当前优化资源。
 
 ## 发布
 

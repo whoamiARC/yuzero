@@ -34,7 +34,7 @@ export function pageMetadata(locale: Locale, page: Page): Metadata {
 export const siteMetadata: Metadata = {
   metadataBase: new URL("https://www.yuzero.com"),
   icons: {
-    icon: `${process.env.NEXT_PUBLIC_SITE_BASE_PATH ?? ""}/yuzero-logo.png`,
-    apple: `${process.env.NEXT_PUBLIC_SITE_BASE_PATH ?? ""}/yuzero-logo.png`,
+    icon: { url: `${process.env.NEXT_PUBLIC_SITE_BASE_PATH ?? ""}/media/v2/icon-32.png`, sizes: "32x32", type: "image/png" },
+    apple: { url: `${process.env.NEXT_PUBLIC_SITE_BASE_PATH ?? ""}/media/v2/icon-180.png`, sizes: "180x180", type: "image/png" },
   },
 };

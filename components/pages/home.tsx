@@ -22,7 +22,7 @@ export default function Home({ locale }: { locale: Locale }) {
             </div>
             <div className="brand-stage">
               <div className="brand-stage-top"><span>Built by YuZero</span><span aria-hidden="true">{"{ 0 → ∞ }"}</span></div>
-              <img className="hero-logo" src={asset("yuzero-logo.png")} alt={text.logoAlt} width="1254" height="1254" fetchPriority="high" />
+              <img className="hero-logo" src={asset("media/v2/logo-960.webp")} srcSet={`${asset("media/v2/logo-480.webp")} 480w, ${asset("media/v2/logo-960.webp")} 960w`} sizes="(max-width: 480px) 260px, (max-width: 800px) 310px, 440px" alt={text.logoAlt} width="960" height="960" loading="eager" fetchPriority="high" />
               <div className="brand-stage-bottom"><p>{text.stage[0]}<br /><strong>{text.stage[1]}</strong></p><Link href={localizedPath(locale, "/products/")} aria-label={text.browseLabel}><Arrow /></Link></div>
             </div>
           </div>
